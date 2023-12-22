@@ -14,7 +14,7 @@
 //     }
 //  };
 
-//////////////////////-----2----///////////////////////
+//********************* 2 ********************************
 // function ListNode(val, next) {
 //     val = (val === undefined ? 0 : val);
 //     next = (next === undefined ? null : next);
@@ -56,7 +56,8 @@
 //     }
 //       return List.next;
 //  };
-////////////////////////3////////////
+
+//************************ 3 *****************************
 //1.Sort array
 //2 find median
 // var findMedianSortedArrays = function (nums1, nums2) {
@@ -87,3 +88,24 @@
 // var nums1 =[1,3]; var nums2 = [2]
 
 // findMedianSortedArrays(nums1, nums2)
+
+//*********************** 704 ******************************
+//https://leetcode.com/problems/binary-search/description/
+// var search = function(nums, target) {
+//     var start=0;
+//     var end=nums.length-1;
+//     var middle=Math.floor((start+end)/2);  //0+5/2=2.5
+//     while(target!==nums[middle] && start<=end){
+//           if(target<nums[middle]){
+//               end=middle-1;
+//           }else{
+//               start=middle+1
+//           }
+//           middle=Math.floor((start+end)/2);
+//     }
+//     if(nums[middle]==target){
+//         return middle;
+//     }
+//     return -1;
+// };
+
