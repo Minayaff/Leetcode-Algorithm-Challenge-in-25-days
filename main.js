@@ -1,4 +1,5 @@
 //1. Two Sum
+// https://leetcode.com/problems/two-sum/
 //   @param {number[]} nums
 //   @param {number} target
 //   @return {number[]}
@@ -15,6 +16,7 @@
 //  };
 
 //********************* 2 ********************************
+// https://leetcode.com/problems/add-two-numbers/
 // function ListNode(val, next) {
 //     val = (val === undefined ? 0 : val);
 //     next = (next === undefined ? null : next);
@@ -109,3 +111,104 @@
 //     return -1;
 // };
 
+//*********************** 34 ******************************
+
+//https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/solutions/4147878/video-give-me-10-minutes-how-we-think-about-a-solution-binary-search/
+// var searchRange = function(nums, target) {
+//     const binarySearch = (nums, target, isSearchingLeft) => {
+//         let left = 0;
+//         let right = nums.length - 1;
+//         let idx = -1;
+      
+//         while (left <= right) {
+//             const mid = Math.floor((left + right) / 2);
+            
+//             if (nums[mid] > target) {
+//                 right = mid - 1;
+//             } else if (nums[mid] < target) {
+//                 left = mid + 1;
+//             } else {
+//                 idx = mid;
+//                 if (isSearchingLeft) {
+//                     right = mid - 1;
+//                 } else {
+//                     left = mid + 1;
+//                 }
+//             }
+//         }
+      
+//         return idx;
+//     };
+    
+//     const left = binarySearch(nums, target, true);
+//     const right = binarySearch(nums, target, false);
+    
+//     return [left, right];    
+// };
+
+
+
+//Eolimp
+//https://www.eolymp.com/en/problems/11244
+
+// var arr = [1, 3, 5, 6, 8, 10, 11, 11, 11, 16]
+// var target = 13;
+
+// function TwoSum(arr, target) {
+//     var newArr=[]
+//     var left = 0, 
+//     right = arr.length - 1; //8
+//     while (left<right) {
+//         var currentSum=arr[left] + arr[right];
+//         if (currentSum === target) { //17==13
+//             newArr.push(left)
+//             newArr.push(right)
+//             return newArr;
+//         } else if (currentSum < target) {  //17<13
+//             left++;
+//         } else {
+//             right--;
+//         }
+//     }
+   
+//     return "NO";
+// }
+
+
+// 643. Maximum Average Subarray I Leetcode
+// https://leetcode.com/problems/maximum-average-subarray-i/
+// var findMaxAverage = function (nums, k) {
+//     if(k<0 || k>nums.length) return null;
+//     if(nums.length==1) return nums[0]
+//     var maxAvg= -Infinity;
+//     var currentSum=0;
+//      for(var i=0; i<nums.length;i++){
+//          currentSum+=nums[i];
+//         if(i>=k-1){
+//             maxAvg=Math.max(maxAvg,currentSum);
+//             currentSum-=nums[i-(k-1)];
+//         }
+//      }
+//     return maxAvg/k;
+// };
+
+// 3. Longest Substring Without Repeating Characters
+// https://leetcode.com/problems/longest-substring-without-repeating-characters/
+var lengthOfLongestSubstring = function(s) {
+    var map=new Map();
+    var longestStr=0;
+    var left=0;
+    var right=0;
+    while(right<s.length){
+         var letter=s[right]
+         if(!map.has(letter)){
+             map.set(letter);
+             longestStr=Math.max(longestStr,map.size);
+             right++;
+         }else{
+             map.delete(s[left]);
+             left++;
+         }
+    }
+    return longestStr
+};
