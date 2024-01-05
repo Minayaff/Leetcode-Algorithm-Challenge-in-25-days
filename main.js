@@ -268,28 +268,126 @@ climbStairs(5);
 
 // https://leetcode.com/problems/edit-distance/description/
 
-  var minDistance = function(word1, word2) {
+var minDistance = function (word1, word2) {
     const m = word1.length;
     const n = word2.length;
-    const dp = new Array(m+1).fill(null).map(() => new Array(n+1).fill(null));
-    
+    const dp = new Array(m + 1).fill(null).map(() => new Array(n + 1).fill(null));
+
     for (let i = 0; i <= m; i++) {
         dp[i][0] = i;
     }
-    
+
     for (let j = 0; j <= n; j++) {
         dp[0][j] = j;
     }
-    
+
     for (let i = 1; i <= m; i++) {
         for (let j = 1; j <= n; j++) {
-            if (word1[i-1] === word2[j-1]) {
-                dp[i][j] = dp[i-1][j-1];
+            if (word1[i - 1] === word2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1];
             } else {
-                dp[i][j] = Math.min(dp[i-1][j-1], dp[i-1][j], dp[i][j-1]) + 1;
+                dp[i][j] = Math.min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1;
             }
         }
     }
-    
+
     return dp[m][n];
 };
+
+minDistance("horse", "ros")
+
+
+//https://leetcode.com/problems/valid-parentheses/description/
+/**
+ * @param {string} s
+ * @return {boolean}
+ */
+const pairs = {
+    "(": ")",
+    "[": "]",
+    "{": "}"
+}
+
+var isValid = function (s) {
+    if (s.length % 2 === 1) return false
+
+    if (s[0] === "]" || s[0] === ")" || s[0] === "}") return false
+
+    if (s[s.length - 1] === "[" || s[s.length - 1] === "(" || s[s.length - 1] === "{") return false
+
+
+    let stack = []
+
+    for (let i = 0; i < s.length; i++) {
+        if (s[i] === "[" || s[i] === "(" || s[i] === "{") {
+            stack.push(s[i])
+            
+        } else if (pairs[stack.pop()] !== s[i]) {
+            return false
+        }
+
+    }
+    return stack.length === 0
+
+};
+
+isValid("(}");
+
+
+//https://leetcode.com/problems/baseball-game/submissions/
+var calPoints = function(operations) {
+    
+    let newArr=[];
+
+    for(var i=0;i<operations.length;i++){
+        if (operations[i] != 'C' && operations[i] != 'D' && operations[i] != '+') {
+            let value = parseInt(operations[i])
+            newArr.push(value)
+        }
+
+        if (operations[i] == "C") {
+            newArr.pop()
+        }else if (operations[i] === "D") {
+            let value = newArr[newArr.length - 1] * 2
+            newArr.push(value)
+        } else if (operations[i] === "+") {
+            let newValue = newArr[newArr.length - 1] + newArr[newArr.length - 2]
+            newArr.push(newValue)
+        }
+    }
+    let total = newArr.reduce((acc, curr) => {
+        return acc += curr
+    }, 0)
+    return total
+
+};
+
+//https://leetcode.com/problems/asteroid-collision/description/
+
+var asteroidCollision = function(asteroids) {
+    const n = asteroids.length;
+        const s = [];
+        for (let i = 0; i < n; i++) {
+            if (asteroids[i] > 0 || s.length === 0) {
+                s.push(asteroids[i]);
+            } 
+            else {
+                while (s.length > 0 && s[s.length - 1] > 0 && s[s.length - 1] < Math.abs(asteroids[i])) {
+                    s.pop();
+            }
+            if (s.length > 0 && s[s.length - 1] === Math.abs(asteroids[i])) {
+                s.pop();
+            } 
+            else {
+                if (s.length === 0 || s[s.length - 1] < 0) {
+                    s.push(asteroids[i]);
+                }
+            }
+            }
+        }
+        const res = new Array(s.length);
+        for (let i = s.length - 1; i >= 0; i--) {
+            res[i] = s.pop();
+        }
+        return res;
+    };
