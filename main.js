@@ -321,9 +321,11 @@ var isValid = function (s) {
     for (let i = 0; i < s.length; i++) {
         if (s[i] === "[" || s[i] === "(" || s[i] === "{") {
             stack.push(s[i])
-            
-        } else if (pairs[stack.pop()] !== s[i]) {
+
+        } else if (stack.length > 0 && pairs[stack.pop()] !== s[i]) { //]
             return false
+        } else {
+            return false;
         }
 
     }
@@ -331,15 +333,15 @@ var isValid = function (s) {
 
 };
 
-isValid("(}");
+isValid("()))");
 
 
 //https://leetcode.com/problems/baseball-game/submissions/
-var calPoints = function(operations) {
-    
-    let newArr=[];
+var calPoints = function (operations) {
 
-    for(var i=0;i<operations.length;i++){
+    let newArr = [];
+
+    for (var i = 0; i < operations.length; i++) {
         if (operations[i] != 'C' && operations[i] != 'D' && operations[i] != '+') {
             let value = parseInt(operations[i])
             newArr.push(value)
@@ -347,7 +349,7 @@ var calPoints = function(operations) {
 
         if (operations[i] == "C") {
             newArr.pop()
-        }else if (operations[i] === "D") {
+        } else if (operations[i] === "D") {
             let value = newArr[newArr.length - 1] * 2
             newArr.push(value)
         } else if (operations[i] === "+") {
@@ -364,30 +366,155 @@ var calPoints = function(operations) {
 
 //https://leetcode.com/problems/asteroid-collision/description/
 
-var asteroidCollision = function(asteroids) {
-    const n = asteroids.length;
-        const s = [];
-        for (let i = 0; i < n; i++) {
-            if (asteroids[i] > 0 || s.length === 0) {
-                s.push(asteroids[i]);
-            } 
-            else {
-                while (s.length > 0 && s[s.length - 1] > 0 && s[s.length - 1] < Math.abs(asteroids[i])) {
-                    s.pop();
-            }
-            if (s.length > 0 && s[s.length - 1] === Math.abs(asteroids[i])) {
-                s.pop();
-            } 
-            else {
-                if (s.length === 0 || s[s.length - 1] < 0) {
-                    s.push(asteroids[i]);
-                }
-            }
-            }
+var asteroidCollision = function (asteroids) {
+    const res = []
+
+    for (let i = 0; i < asteroids.length; i++) {
+        const last = res[res.length - 1]
+        const cur = asteroids[i]
+
+        if (!res.length || last < 0 || cur > 0) {
+            res.push(cur)
+        } else if (-cur == last) {
+            res.pop()
+        } else if (-cur > last) {
+            res.pop()
+            i--
         }
-        const res = new Array(s.length);
-        for (let i = s.length - 1; i >= 0; i--) {
-            res[i] = s.pop();
+    }
+
+    return res
+};
+
+asteroidCollision([10, 2, -5])
+
+
+//https://leetcode.com/problems/group-anagrams/
+var groupAnagrams = function (strs) {
+    var map = new Map();
+    strs.forEach(element => {
+        var str = element.split('').sort().join(''); //aet aet
+        if (map.has(str)) {
+            var data = map.get(str);
+            data.push(element)
+        } else {
+            map.set(str, [element]);
         }
-        return res;
-    };
+    });
+    var result = Array.from(map.values());
+
+    return result;
+};
+
+
+
+groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"])
+
+
+//https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
+
+const maxProfit = (prices) => {
+    let left = 0; // Buy
+    let right = 1; // sell
+    let max_profit = 0;
+    while (right < prices.length) {
+        if (prices[left] < prices[right]) {
+            let profit = prices[right] - prices[left]; // our current profit
+
+            max_profit = Math.max(max_profit, profit);
+        } else {
+            left = right;
+        }
+        right++;
+    }
+    return max_profit;
+};
+
+maxProfit([7, 1, 5, 3, 6, 4])
+
+
+//https://leetcode.com/problems/isomorphic-strings/description/
+var isIsomorphic = function (s, t) {
+    const mapS = new Map();
+    const mapT = new Map();
+
+    for (let i = 0; i < s.length; i++) {
+        const charS = s[i];
+        const charT = t[i];
+
+        if ((!mapS.has(charS) && !mapT.has(charT))) {
+            mapS.set(charS, charT);
+            mapT.set(charT, charS);
+        } else if (mapS.get(charS) !== charT) {
+            return false;
+        }
+    }
+
+    return true;
+};
+
+isIsomorphic("egg", "add")
+
+//https://leetcode.com/problems/contains-duplicate/description/
+var containsDuplicate = function (nums) {
+    var mapList = new Map();
+    for (var i = 0; i < nums.length; i++) {
+        if (mapList.has(nums[i])) {
+            return true
+        } else {
+            mapList.set(nums[i])
+        }
+    }
+    return false;
+};
+
+containsDuplicate([1, 2, 3, 1])
+
+
+//https://leetcode.com/problems/valid-anagram/description/
+var isAnagram = function(s, t) {
+    var ss= s.split('').sort().join();
+      var tt=t.split('').sort().join();
+       if(ss==tt){
+           return true
+       }else{
+           return false;
+       }
+};
+
+
+isAnagram("anagram","nagaram")
+
+
+//https://leetcode.com/problems/palindrome-permutation/description/
+var canPermutePalindrome = function (s) {
+    var mapList = new Map();
+    for (var i = 0; i < s.length; i++) {
+        if (mapList.has(s[i])) {
+            var value = mapList.get(s[i]);
+            value++;
+            mapList.set(s[i], value)
+
+        } else {
+            mapList.set(s[i], 1)
+        }
+    }
+    var count = 0;
+
+    mapList.forEach((values, keys) => {
+        if (values % 2 != 0) {
+            count++
+        }
+    })
+
+    if (count > 1) {
+        return false
+    } else {
+        return true
+    }
+};
+
+
+
+
+
